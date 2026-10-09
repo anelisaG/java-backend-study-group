@@ -111,8 +111,9 @@ public static <T> void printValue(T value) //That tells Java this method introdu
 ## Bounded Generics
 Bounded generics are generic type parameters that restrict the types of arguments you can pass into a generic class, interface, or method. Instead of letting a type parameter accept any arbitrary object type, a bounded generic forces the type argument to be a specific class or a subtype/implementer of a given class or interface.
 
-- Bounds are specified using the extends keyword.
-- A type parameter can have a single bound or multiple bounds.
+ ●  Bounds are specified using the extends keyword.
+ 
+ ●  A type parameter can have a single bound or multiple bounds.
 
 Syntax
 <T extends superClassName>
@@ -137,7 +138,7 @@ Double   → Number
 Long     → Number
 
 But:
-printNumber("Hello"); // ❌
+printNumber("Hello"); // wont work 
 
 because String does not extend Number.
 This is called a bounded type parameter.
@@ -148,6 +149,77 @@ This is called a bounded type parameter.
 
 ## 1.5 Wildcards <?>
 
+Wildcards in Java Generics allow you to work with unknown types in a flexible and type-safe way. They are represented using the ? symbol and help in writing reusable code that can handle different generic types.
+
+● Used when the exact type of a generic parameter is not known in advance
+
+● Commonly applied in method arguments to increase flexibility
+
+● Helps maintain type safety while working with collections of different types
+
+For example:
+public void printList(List<?> list) {
+
+    for (Object item : list) {
+        System.out.println(item);
+    }
+}
+
+This method can accept:
+List<String>
+List<Integer>
+List<Double>
+
+etc.
+
+
+## Types of wildcards
+  In Java, wildcards are mainly classified into three types based on how they define type flexibility and restrictions.
+  
+  1. Upper Bounded Wildcards
+  These wildcards can be used when you want to relax the restrictions on a variable. For example, say you want to write a method that works on List < Integer >, List < Double > and List < Number >, you can do this     using an upper bounded wildcard. 
+  
+  To declare an upper-bounded wildcard, use the wildcard character ('?'), followed by the extends keyword, followed by its upper bound. 
+  
+  public static void add(List<? extends Number> list)
+  This means:
+  A list of Number or any subclass of Number.
+  
+  So these can be passed:
+  List<Integer>
+  List<Double>
+  List<Long>
+
+  2. Lower Bounded Wildcards
+  It is expressed using the wildcard character ('?'), followed by the super keyword, followed by its lower bound: <? super A>. 
+
+  Example : List<? super Integer>
+  This means:
+  A list of Integer or a parent type of Integer.
+  
+  For example:
+  List<Integer>
+  List<Number>
+  List<Object>
+  
+  can be used.
+  You'll often encounter this when working with collections and APIs.
+ 
+  3. Unbounded Wildcard
+  An unbounded wildcard is represented by <?> and is used when the exact type of a generic object is unknown or does not need to be specified. For example, List<?> represents a list of an unknown type.
+  
+  Syntax:
+  
+  GenericType<?> variableName;
+  
+  Unbounded wildcards are useful when:
+  
+  A method needs to work with generic objects regardless of their specific type.
+  The operation only requires functionality available from the Object class.
+  The code does not need to modify values based on a specific type parameter.
+
+## Question 
+What is the difference between T, ?, ? extends T, and ? super T?"
 ## 2 Enums
 
 ## What are Enums ?
@@ -155,8 +227,11 @@ This is called a bounded type parameter.
   Enums are often used in cases where we know all possible values at compile time. Examples
   include:
   ● Days of the week (SUNDAY, MONDAY, TUESDAY, etc.)
+  
   ● Directions (NORTH, SOUTH, EAST, WEST)
+  
   ● Status codes (RUNNING, FAILED, SUCCESS, etc.)
+  
   Enums are particularly useful for situations where a variable can only have one of a small set
   of predefined values
 
@@ -165,8 +240,11 @@ This is called a bounded type parameter.
   Error. These codes are constants used to indicate specific conditions, much like Java's enums.
   In Java, enums allow us to define custom constants for scenarios like:
   ● Days of the week
+  
   ● Status codes
+  
   ● Seasons (WINTER, SPRING, SUMMER, FALL)
+  
 
 ## Defining an Enum in Java
   You can define an enum using the enum keyword. For example:
@@ -193,9 +271,11 @@ This is called a bounded type parameter.
 ## Characteristics of Java Enums
   ● Named constants: Enum constants are implicitly public, static, and final. This means
   they are constants that cannot be changed.
+  
   ● Object-oriented: Although enums look simple, they are full-fledged objects in Java.
   You can define constructors, instance variables, methods, and even implement
   interfaces in enums.
+  
   ● Indexing: Enum constants have an implicit order, starting from 0. You can retrieve
   the index of an enum constant using the ordinal() method.
 
@@ -209,9 +289,10 @@ This is called a bounded type parameter.
   This method returns an array of all enum constants. It is helpful for iterating through
   all possible values.
 
-Example:
 
- public class Demo {
+  Example:
+
+   public class Demo {
       public static void main(String[] args){
          Status[] statuses = Status.values();
          for (Status s: statuses){
@@ -219,6 +300,18 @@ Example:
          }
       }
    }
+
+ 
+  public class Demo {
+    public static void main(String[] args){
+         Status[] statuses = Status.values();
+         for (Status s: statuses){
+            System.out.println(s + " at index "+ s.ordinal());
+         }
+      }
+  }
+
+
 
 Output:
 
